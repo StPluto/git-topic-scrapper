@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 baseurl = "https://github.com"
-topic = input("Enter the topic (example: 'php', 'python' , 'html'):")
+topic = input("Enter the topic ('php','python','html','utilities' ,'chrome' ,'windows' ,'go'):")
 pages = int(input("Enter number of pages: "))
 mode = int(input("Enter the mode (MostStars = 1, RecentlyUpdated = 2):"))
 def MostStars(pages):
