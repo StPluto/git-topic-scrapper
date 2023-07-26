@@ -1,20 +1,23 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import asyncio
+import aiohttp
 baseurl = "https://github.com"
 topic = input("Enter the topic ('php','python','html','utilities' ,'chrome' ,'windows' ,'go'):")
 pages = int(input("Enter number of pages: "))
 
-def RecentlyUpdated(pages):
-    open('RecentlyUpdated.html', 'w').close()
+async def RecentlyUpdated(pages):
     for i in range(0,pages):
-        print(f"Page: {i + 1}")
-        page = str(i)
+        print(f"Page: {i}")
+        page = i
         link = "https://github.com/topics/" + topic + "?o=desc&s=updated&page=" + page
-        response = requests.get(link).text
-        soup = BeautifulSoup(response, 'lxml')
-        posts = soup.find_all('div', 'd-flex flex-justify-between flex-items-start flex-wrap gap-2 my-3')
-        f1 = open('RecentlyUpdated.html', 'a', encoding="utf-8")
+        async with aiohttp.ClientSession() as session:
+            response = await requests.get(link).text
+            soup = BeautifulSoup(await response, 'lxml')
+            posts = soup.find_all('div', 'd-flex flex-justify-between flex-items-start flex-wrap gap-2 my-3')
+            tasks = []
+        f1 = open('RecentlyUpdated.html', 'w', encoding="utf-8")
         for x in posts:
             star = re.search(r'title=\"([0-9, ,])+\"', str(x))
             star = re.sub(r'[title=[\"]', '', star[0])
