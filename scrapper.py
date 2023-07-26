@@ -35,7 +35,7 @@ def RecentlyUpdated(pages):
         response = requests.get(link).text
         soup = BeautifulSoup(response, 'lxml')
         posts = soup.find_all('div', 'd-flex flex-justify-between flex-items-start flex-wrap gap-2 my-3')
-        f1 = open('RecentlyUpdated.txt', 'a', encoding="utf-8")
+        f1 = open('RecentlyUpdated.html', 'w', encoding="utf-8")
         for x in posts:
             star = re.search(r'title=\"([0-9, ,])+\"', str(x))
             star = re.sub(r'[title=[\"]', '', star[0])
@@ -43,8 +43,8 @@ def RecentlyUpdated(pages):
             repo = re.search(r'href=\"(\/.*\/.*)\"', str(x))
             url = baseurl + repo[1]
             name = re.sub(r'\/.*\/','',repo[1])
-            if int(star) > 100:
-                f1.write("Repository: " + name + ", Stars - " + star + " Link: " + url)
+            if int(star) > 50:
+                f1.write("Repository: " + name + ", Stars - " + star + " Link: <a href=" + url +"> Ссылка </a><br>")
                 f1.write('\n')
         f1.close()
 if mode == 1:
